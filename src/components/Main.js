@@ -51,7 +51,7 @@ const Main = () => {
         }}
       >
         <Autocomplete
-          apiKey='AIzaSyCNT2IE7H3FINW4v5yx7ulQ5ow3kcBCjRY'
+          apiKey={process.env.NEXT_PUBLIC_API_KEY}
           onPlaceSelected={onPlaceSelected}
           ref={autocompleteRef}
         />

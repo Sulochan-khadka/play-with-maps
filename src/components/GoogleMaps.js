@@ -21,7 +21,7 @@ const center = {
 const GoogleMaps = ({ places }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyCNT2IE7H3FINW4v5yx7ulQ5ow3kcBCjRY',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
   });
   const DirectionsService = new google.maps.DirectionsService();
   let [directions, setDirections] = useState('');
