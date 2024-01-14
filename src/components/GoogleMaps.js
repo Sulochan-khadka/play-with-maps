@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   GoogleMap,
   Marker,
@@ -18,15 +18,56 @@ const center = {
   lat: 28.745,
   lng: 28.523,
 };
+
 const GoogleMaps = ({ places }) => {
+  const [routes, setRoutes] = useState([]);
+  const [location, setLocation] = useState([]);
+
+  const calculateRoute = async ({ origin, destination }) => {
+    if (!origin || !destination) return;
+
+    const directionService = new google.maps.DirectionsService();
+    const results = await directionService.route({
+      origin,
+      destination,
+      travelMode: google.maps.TravelMode.DRIVING,
+    });
+
+    setRoutes((prev) => [
+      ...prev,
+      {
+        origin,
+        destination,
+        directions: results,
+      },
+    ]);
+  };
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY,
   });
-  const DirectionsService = new google.maps.DirectionsService();
-  let [directions, setDirections] = useState('');
-  const origin = places.slice(0, -1);
-  const dest = places.slice(1);
+
+  useEffect(() => {
+    if (places.length > 1) {
+      const [lat, lng] = places[places.length - 1].split(',');
+      const coordinatesObject = {
+        lat: parseFloat(lat),
+        lng: parseFloat(lng),
+      };
+
+      setLocation((prev) => [...prev, coordinatesObject]);
+    }
+  }, [places]);
+
+  // Calculate routes when location changes
+  useEffect(() => {
+    if (location.length > 1) {
+      const origin = location[location.length - 2];
+      const destination = location[location.length - 1];
+      calculateRoute({ origin, destination });
+    }
+  }, [location]);
 
   return isLoaded ? (
     <div>
@@ -40,20 +81,16 @@ const GoogleMaps = ({ places }) => {
           streetViewControl: false,
           mapTypeControl: false,
         }}
-        //   onLoad={onLoad}
-        //   onUnmount={onUnmount}
       >
-        {/* Child components, such as markers, info windows, etc. */}
-        {places.map((item, index) => {
-          const [lat, lng] = item.split(',');
-          const coordinatesObject = {
-            lat: parseFloat(lat),
-            lng: parseFloat(lng),
-          };
-          return <Marker key={index} position={coordinatesObject} />;
-        })}
-
-        <></>
+        {routes.map((route, index) => (
+          <React.Fragment key={index}>
+            <DirectionsRenderer directions={route.directions} />
+            <Marker position={route.origin} />
+            {index === routes.length - 1 && (
+              <Marker position={route.destination} />
+            )}
+          </React.Fragment>
+        ))}
       </GoogleMap>
     </div>
   ) : (

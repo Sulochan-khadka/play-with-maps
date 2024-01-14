@@ -5,6 +5,7 @@ import GoogleMaps from './GoogleMaps';
 import BingMaps from './BingMaps';
 import Autocomplete from 'react-google-autocomplete';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { StrictModeDroppable } from './StrictModeDroppable';
 const Main = () => {
   const [position, setPosition] = useState(['']);
   const [google, showGoogle] = useState(false);
@@ -82,7 +83,7 @@ const Main = () => {
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={handleDragDrop}>
           <div style={{ marginTop: '100px' }}>
-            <Droppable droppableId='root' type='group'>
+            <StrictModeDroppable droppableId='theuniqueProp' type='group'>
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   {selectedPlace.map((position, index) => (
@@ -123,7 +124,7 @@ const Main = () => {
                   ))}
                 </div>
               )}
-            </Droppable>
+            </StrictModeDroppable>
           </div>
         </DragDropContext>
         <div
