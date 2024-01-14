@@ -50,11 +50,7 @@ const GoogleMaps = ({ places }) => {
             lat: parseFloat(lat),
             lng: parseFloat(lng),
           };
-          return (
-            <>
-              <Marker key={index} position={coordinatesObject} />
-            </>
-          );
+          return <Marker key={index} position={coordinatesObject} />;
         })}
 
         <></>
