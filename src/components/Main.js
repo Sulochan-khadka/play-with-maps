@@ -6,6 +6,7 @@ import BingMaps from './BingMaps';
 import Autocomplete from 'react-google-autocomplete';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { StrictModeDroppable } from './StrictModeDroppable';
+import './main.css';
 const Main = () => {
   const [position, setPosition] = useState(['']);
   const [google, showGoogle] = useState(false);
@@ -82,10 +83,18 @@ const Main = () => {
       </div>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={handleDragDrop}>
-          <div style={{ marginTop: '100px' }}>
+          <div
+            style={{
+              marginTop: '100px',
+            }}
+          >
             <StrictModeDroppable droppableId='theuniqueProp' type='group'>
               {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
+                <div
+                  className='order'
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
                   {selectedPlace.map((position, index) => (
                     <Draggable
                       draggableId={position.id}
@@ -107,7 +116,7 @@ const Main = () => {
                             <div
                               style={{
                                 margin: '2px',
-                                backgroundColor: 'grey',
+                                backgroundColor: '#c2c2c2',
                                 height: '40px',
                                 borderRadius: '5px',
                                 display: 'flex',
