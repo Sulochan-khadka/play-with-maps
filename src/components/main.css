@@ -1,5 +1,14 @@
 .order {
-  position: absolute;
-  margin-left: 79%;
-  z-index: 1;
+  display: flex;
+  padding: 8px;
+}
+
+.order > div {
+  margin: 8px;
+  background-color: #c2c2c2;
+  height: 40px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
